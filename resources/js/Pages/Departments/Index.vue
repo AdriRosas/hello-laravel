@@ -16,17 +16,19 @@ const deleteDepartment = () => {
     const alerta = Swal.mixin({
         buttonStyling: true,
     });
-    alerta.fire({
-        title: 'Are you sure delete '+name+' ?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: '<i class="fa-solid fa-check"></i> Yes, delete',
-        cancelButtonText: '<i class="fa-solid fa-ban"></i> Cancel',
-    }).then((result) => {
-        if(result.isConfirmed){
-            form.delete(route('departments.destroy',id));
-        }
-    });
+    alerta
+        .fire({
+            title: "Are you sure delete " + name + " ?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: '<i class="fa-solid fa-check"></i> Yes, delete',
+            cancelButtonText: '<i class="fa-solid fa-ban"></i> Cancel',
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                form.delete(route("departments.destroy", id));
+            }
+        });
 };
 </script>
 
@@ -42,9 +44,49 @@ const deleteDepartment = () => {
 
         <div class="py-12">
             <div class="bg-white grid v-screen place-items-center">
-                <div
-                    class="bg-white overflow-hidden shadow-sm sm:rounded-lg"
-                ></div>
+                <div class="mt-3 mb-3 flex">
+                    <Link
+                        :href="route('departments.create')"
+                        :class="'px-4 py-2 bg-gray-800 text-white border rounded-md font-semibold text-xs'"
+                    >
+                        <i class="fa-solid fa-plus-circle"></i> Add
+                    </Link>
+                </div>
+            </div>
+            <div class="bg-white grid v-screen place-items-center">
+                <table class="table-auto border border-gray-400">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-4">#</th>
+                            <th class="px-4 py-4">DEPARTMENT</th>
+                            <th class="px-4 py-4"></th>
+                            <th class="px-4 py-4">#</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(dep, i) in departments" :key="dep.id">
+                            <td class="boder border-gray-400 px-4 py-4">
+                                {{ i + 1 }}
+                            </td>
+                            <td class="boder border-gray-400 px-4 py-4">
+                                {{ dep.name }}
+                            </td>
+                            <td class="boder border-gray-400 px-4 py-4">
+                                <Link
+                                    :href="route('departments.edit', dep.id)"
+                                    :class="'px-4 py-2 bg-yellow-800 text-white border rounded-md font-semibold text-xs'"
+                                >
+                                    <i class="fa-solid fa-edit"></i>
+                                </Link>
+                            </td>
+                            <td class="boder border-gray-400 px-4 py-4">
+                                <DangerButton @click="deleteDepartment(dep.id,dep.name)" >
+                                    <i class="fa-solid fa-trash"></i>
+                                </DangerButton>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </AuthenticatedLayout>
